@@ -1,0 +1,349 @@
+# Simulación de interfaz móvil para formulario de citas
+
+Aquí tienes un archivo HTML autónomo que simula la interfaz de un teléfono móvil para tu formulario de asignación de citas:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <!-- Meta tags optimizados para móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#4285F4" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <title>Asignación Citas con Agente</title>
+    
+    <style>
+        /* Reset y estilos base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Contenedor del teléfono */
+        .phone-container {
+            width: 360px;
+            height: 740px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 
+                        0 10px 10px rgba(0, 0, 0, 0.05);
+            border: 10px solid #333;
+        }
+        
+        /* Barra de estado */
+        .status-bar {
+            height: 44px;
+            background-color: #4285F4;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+        }
+        
+        .status-bar .time {
+            font-weight: 600;
+        }
+        
+        .status-bar .icons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* Contenido principal */
+        .app-content {
+            height: calc(100% - 44px);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        /* Encabezado */
+        .app-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .app-header h1 {
+            font-size: 24px;
+            color: #4285F4;
+            margin-bottom: 8px;
+        }
+        
+        .app-header p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        /* Estilos de formulario */
+        .form-group {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4285F4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+            background-color: white;
+        }
+        
+        /* Botones */
+        .button-container {
+            margin-top: 30px;
+        }
+        
+        button {
+            width: 100%;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+            background-color: #3367d6;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Efecto ripple para botones */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.8s;
+        }
+        
+        .ripple:active:after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+        
+        /* Media queries para responsividad */
+        @media (max-width: 400px) {
+            .phone-container {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+        }
+        
+        @media (max-height: 740px) {
+            .phone-container {
+                height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Barra de estado simulada -->
+        <div class="status-bar">
+            <div class="time" id="current-time">14:25</div>
+            <div class="icons">
+                <div>📶</div>
+                <div>📡</div>
+                <div>🔋</div>
+            </div>
+        </div>
+        
+        <!-- Contenido principal de la app -->
+        <div class="app-content">
+            <div class="app-header">
+                <h1>Asignación de Citas</h1>
+                <p>Complete el formulario para programar su cita con un agente</p>
+            </div>
+            
+            <form id="appointment-form">
+                <div class="form-group">
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" placeholder="Introduzca su nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" placeholder="Ej. 600123456" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">Fecha preferida</label>
+                    <input type="date" id="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Hora preferida</label>
+                    <select id="time" required>
+                        <option value="" disabled selected>Seleccione una hora</option>
+                        <option value="9:00">9:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reason">Motivo de la cita</label>
+                    <textarea id="reason" rows="3" placeholder="Describa brevemente el motivo de su cita"></textarea>
+                </div>
+                
+                <div class="button-container">
+                    <button type="submit" class="ripple">Solicitar cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Actualizar la hora en la barra de estado
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            // Formato de dos dígitos
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+        }
+        
+        // Actualizar la hora inmediatamente y luego cada minuto
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        // Prevenir envío del formulario para demostración
+        document.getElementById('appointment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulación de envío
+            const button = document.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Enviando...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                alert('¡Cita solicitada con éxito!');
+                button.textContent = originalText;
+                button.disabled = false;
+                this.reset();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
+```
+
+## Explicación de los cambios realizados
+
+1. **Meta tags para dispositivos móviles**:
+   - Añadí `user-scalable=no` para evitar zoom indeseado
+   - Incluí `theme-color` para personalizar el color de la barra de navegación en Android
+   - Agregué meta tags para aplicaciones web en iOS (`apple-mobile-web-app-capable`)
+
+2. **Simulación de teléfono móvil**:
+   - Creé un contenedor con bordes redondeados y sombras para simular un dispositivo físico
+   - Diseñé una barra de estado con hora y íconos de conexión/batería
+
+3. **Diseño y estética móvil**:
+   - Implementé bordes redondeados en inputs y botones (12px)
+   - Añadí sombras sutiles para crear profundidad
+   - Usé colores de la paleta de Google (azul #4285F4) para coherencia visual
+
+4. **Optimización para experiencia táctil**:
+   - Aumenté el tamaño de los elementos interactivos (mínimo 16px de padding)
+   - Añadí mayor espaciado entre elementos para evitar toques accidentales
+   - Implementé `-webkit-tap-highlight-color: transparent` para eliminar el resaltado táctil
+
+5. **Animaciones y transiciones**:
+   - Añadí efecto de "ripple" en botones para simular Material Design
+   - Implementé una suave animación fadeIn para los elementos del formulario
+   - Añadí transiciones en estados hover/focus para feedback visual
+
+6. **Diseño responsive**:
+   - Implementé media queries para adaptar el diseño a diferentes tamaños de pantalla
+   - En pantallas pequeñas, el contenedor ocupa el 100% del espacio disponible
+
+7. **Funcionalidad adicional**:
+   - Añadí JavaScript para mostrar la hora real en la barra de estado
+   - Implementé una simulación de envío del formulario con feedback visual
+
+Este diseño proporciona una experiencia completa que simula una aplicación móvil nativa pero funciona como una página web estándar que puedes abrir directamente en cualquier navegador.

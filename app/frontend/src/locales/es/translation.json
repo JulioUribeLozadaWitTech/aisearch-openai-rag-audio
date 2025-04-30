@@ -1,13 +1,13 @@
 {
     "app": {
-        "title": "Habla con tus datos",
+        "title": "Asignación de Citas con Agente",
         "footer": "Creado con Azure AI Search + Azure OpenAI",
         "stopRecording": "Detener grabación",
         "startRecording": "Comenzar grabación",
         "stopConversation": "Detener conversación"
     },
     "status": {
-        "notRecordingMessage": "Pregunta cualquier cosa sobre los beneficios de los empleados de Contoso",
+        "notRecordingMessage": "Pregunta cualquier cosa con referencia a solicitar una cita médica",
         "conversationInProgress": "Conversación en progreso"
     },
     "history": {
